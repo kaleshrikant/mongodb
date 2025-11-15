@@ -1,0 +1,149 @@
+1. Insert a single book product: "The Great Novel", price: $24.99, category: "Books", stock: 200, author: "Jane Doe"
+db.getCollection("products").insertOne({
+    "name": "The Great Novel",
+    "price": 24.99,
+    "category": "Books",
+    "stock": 200,
+    "author": "Jane Doe"
+}
+);
+
+2. Insert 5 clothing items at once with fields: name, price, category, size, color
+db.getCollection("products").insertMany([
+    {
+        "name": "product1",
+        "price": 11.11,
+        "category": "category1",
+        "size": NumberInt(1),
+        "color": "color1"
+    },
+    {
+        "name": "product2",
+        "price": 22.22,
+        "category": "category2",
+        "size": NumberInt(2),
+        "color": "color2"
+    },
+    {
+        "name": "product3",
+        "price": 33.33,
+        "category": "category3",
+        "size": NumberInt(3),
+        "color": "color3"
+    },
+    {
+        "name": "product4",
+        "price": 44.44,
+        "category": "category4",
+        "size": NumberInt(4),
+        "color": "color4"
+    },
+    {
+        "name": "product5",
+        "price": 55.55,
+        "category": "category5",
+        "size": NumberInt(5),
+        "color": "color5"
+    }
+]);
+
+3. Insert a product with an additional field "releaseDate" set to current date
+db.getCollection("products").insertOne(
+    {
+        "name": "item1",
+        "price": 11.11,
+        "category": "category1",
+        "size": "XXL",
+        "color": "black",
+        "releaseDate": new ISODate()
+    }
+);
+
+4. Insert a product with nested object for dimensions (length, width, height)
+db.getCollection("products").insertOne({
+    "dimensions": {
+        "length": NumberInt(11),
+        "width": NumberInt(22),
+        "height": NumberInt(33)
+    }
+}
+);
+
+5. Insert 3 products with an array field for available colors
+db.getCollection("products").insertOne({
+    "bike": {
+        "Royal Enfiled": {
+            "availableModels": ["C350","C500","HIMALAYAN","HUNTER"],
+            "countryOfOrigin": "INDIA"
+        },
+        "Yamaha": {
+            "availableModels": ["FZ","RX100"],
+            "countryOfOrigin": "JAPAN"
+        },
+        "Harly Devidson": {
+            "availableModels": ["BOBBER"],
+            "countryOfOrigin": "USA"
+        }
+    }
+});
+
+6. Try inserting a product without the price field (observe MongoDB behavior)
+db.getCollection("products").insertOne({
+    "name": "Water Bottle",
+    "category": "Groserry",
+    "stock": 110,
+    "brand": "N/A"
+});
+
+7. Insert a product with _id field manually set to "PROD001"
+db.getCollection("products").insertOne({
+        "_id" : ObjectId("PROD001"),
+        "name" : "Wireless Charger",
+        "price" : 229.99,
+        "category" : "Electronics",
+        "stock" : 15.0,
+        "brand" : "RealMe"
+});
+O/P:
+Uncaught
+BSONError: input must be a 24 character hex string, 12 byte Uint8Array, or an integer
+
+7. Bulk insert 10 grocery items with fields: name, price, category, expiryDate, organic (boolean)
+db.getCollection("products").insertMany([
+{
+    "name": "Bathing Soap",
+    "price": "19.55",
+    "category": "grocery",
+    "expiryDate": new Date(new Date().setFullYear(new Date().getFullYear() + 1)),
+    "organic": false
+},
+{
+    "name": "Hair Oil",
+    "price": "29.55",
+    "category": "grocery",
+    "expiryDate": new Date(new Date().setFullYear(new Date().getFullYear() + 2)),
+    "organic": true
+},
+{
+    "name": "Milk Powder",
+    "price": "39.55",
+    "category": "grocery",
+    "expiryDate": new Date(new Date().setFullYear(new Date().getFullYear() + 3)),
+    "organic": true
+},
+{
+    "name": "Tea Powder",
+    "price": "49.55",
+    "category": "grocery",
+    "expiryDate": new Date(new Date().setFullYear(new Date().getFullYear() + 4)),
+    "organic": true
+},
+{
+    "name": "Shoe Wax",
+    "price": "59.55",
+    "category": "grocery",
+    "expiryDate": new Date(new Date().setFullYear(new Date().getFullYear() + 5)),
+    "organic": false
+}
+]);
+
