@@ -1,0 +1,241 @@
+1. Update the price of "Wireless Mouse" to $34.99
+db.getCollection("products").updateOne(
+// query
+{"name" : "Wireless Mouse"},
+// update
+{$set: {
+    "price" : 34.99
+}},
+// update options (optional)
+{}
+);
+
+2. Increase stock of "USB Cable" by 100 units
+db.getCollection("products").updateOne(
+    // query
+    { "name": "USB Cable" },
+    // update
+    {
+        $inc: {
+            "stock": 100
+        }
+    },
+    // update options (optional)
+    {}
+);
+
+3. Add a discount field (10% discount) to "Bluetooth Speaker"
+db.getCollection("products").updateOne(
+    // query
+    { "name": "Bluetooth Speaker" },
+    // update
+    {
+        $set: {
+            "discount": NumberDecimal(10)
+        }
+    },
+    // update options (optional)
+    {}
+);
+
+Note :🎯 Simple Rule:
+	Update Operations: Use $set, $unset, $inc, $push
+	Aggregation Pipeline: Use $addFields, $project, $match, $group
+
+4. Update all products in "Accessories" category to have a "onSale" field set to true
+db.getCollection("products").updateMany(
+    // query
+    {"category" : "Accessories"},
+    // update
+    {
+        $set: {
+            "onSale": true
+        }
+    },
+    // update options (optional)
+    {}
+);
+
+5. Change the brand of "Phone Case" to "PremiumGuard"
+db.getCollection("products").updateMany(
+// Query
+{"name" : "Phone Case"},
+// Update
+{
+    $set: {
+        "brand" : "PremiumGuard",
+    }
+},
+// Update operations (optional)
+{}
+);
+
+6. Add a "lastRestocked" field with current date to all products with stock < 100
+db.getCollection("products").updateMany(
+    // Query
+    {
+        "stock": {
+            $lt: 100
+        }
+    },
+    // Update
+    {
+        $set: {
+            "lastRestocked": new ISODate()
+        }
+    },
+    // Update operations (optional)
+    {}
+);
+
+7. Update multiple fields at once: change price to $12.99 and stock to 600 for "USB Cable"
+db.getCollection("products").updateMany(
+    // Query
+    {
+        "name": "USB Cable"
+    },
+    // Update
+    {
+        $set: {
+            "price": 12.99,
+            "stock": 600
+        }
+    },
+    // Update operations (optional)
+    {}
+);
+
+8. Rename the field "brand" to "manufacturer" for all products
+db.getCollection("products").updateMany(
+    // Query
+    {},
+    // Update
+    {
+        $set: {
+            "brand": "manufacturer"
+        }
+    },
+    // Update operations (optional)
+    {}
+);
+
+9. Add a rating field (4.5) to products in "Electronics" category
+db.getCollection("products").updateMany(
+    // Query
+    {
+        "category": "Electronics"
+    },
+    // Update
+    {
+        $set: {
+            "rating": NumberDecimal(4.5)
+        }
+    },
+    // Update operations (optional)
+    {}
+);
+
+10. Update stock to 0 for products with price greater than $200
+db.getCollection("products").updateMany(
+    // Query
+    {
+        "price": { $gt: 200 }
+    },
+    // Update
+    {
+        $set: {
+            "rating": NumberDecimal(4.5)
+        }
+    },
+    // Update operations (optional)
+    {}
+);
+
+11. Add a "warranty" field (2 years) to all products from brand "TechGear"
+db.getCollection("products").updateMany(
+    // Query
+    {
+        "brand" : "TechGear"
+    },
+    // Update
+    {
+        $set: {
+            "warranty": NumberInt(2)
+        }
+    },
+    // Update operations (optional)
+    {}
+);
+
+12. Multiply the price of all products by 1.1 (10% price increase)
+db.getCollection("products").updateMany(
+    // Query
+    {},
+    // Update
+    {
+        $mul: {
+            "price": 1.1
+        }
+    },
+    // Update operations (optional)
+    {}
+);
+
+or
+db.getCollection("products").updateMany(
+    // Query
+    {},
+    // Update
+    {
+        $set: {
+            "price": { $multiply: ["$price", 1.1] }
+        }
+    },
+    // Update operations (optional)
+    {}
+);
+
+13. Add "freeShipping" field set to true for products with price > $50
+db.getCollection("products").updateMany(
+    // Query
+    {"price": {
+        $gt: 50
+    }},
+    // Update
+    {
+        $set: {
+            "freeShipping": true
+        }
+    },
+    // Update operations (optional)
+    {}
+);
+
+14. Update the first product found in "Accessories" to have featured: true
+db.getCollection("products").updateOne(
+    // Query
+    {"category" : "Accessories"},
+    // Update
+    {
+        $set: {
+            "featured": true
+        }
+    },
+    // Update operations (optional)
+    {}
+);
+
+15. Set a minimum stock level field (minStock: 50) for all electronics
+db.getCollection("products").updateMany(
+    // Query
+    {"category" : "Electronics"},
+    // Update
+    {
+        $set: {
+            "minStock": NumberInt(50)
+        }
+    },
+    // Update operations (optional)
+    {}
+);
+
