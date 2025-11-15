@@ -1,0 +1,92 @@
+1. Find all products in the database
+db.getCollection("products").find({});
+
+2. Find only products in "Electronics" category
+db.getCollection("products").find({
+    "category": "Electronics"
+});
+
+3. Find products with price less than $50
+db.getCollection("products").find({
+    "price": {$lt: 50}
+});
+
+
+4. Find the product with name "Wireless Mouse"
+db.getCollection("products").find({
+    "name": "Wireless Mouse""
+});
+
+5. Find products where stock is exactly 150
+db.getCollection("products").find({
+    "stock": {$eq: 150}
+});
+
+6. Find all products from brand "TechGear"
+db.getCollection("products").find({
+    "brand": "TechGear"
+});
+
+7. Find products with price equal to $79.99
+db.getCollection("products").find({
+    "price": {$eq: 79.99}
+});
+
+8. Find the first product in the collection
+db.getCollection("products").findOne({});
+
+9. Find products in "Accessories" category with stock greater than 100
+db.getCollection("products").find({
+    $and: [
+        { "category": "Accessories" },
+        { "stock": { $gt: 100 } }
+    ]
+});
+
+10. Find all products and display only the name and price fields
+db.getCollection("products").find(
+    {},
+    {
+        "name": 1,
+        "price": 1,
+        "_id": 0
+    }
+);
+
+11. Find products but exclude the _id field from results
+db.getCollection("products").find(
+    {},
+    {
+        "_id": 0
+    }
+);
+
+12. Count how many products are in "Electronics" category
+db.getCollection("products").find(
+    { "category": "Electronics" }
+).count();
+
+13. Find products where brand is "ConnectPro" or "SafeGuard"
+db.getCollection("products").find({
+    $or: [
+        { "brand": "ConnectPro" },
+        { "brand": "SafeGuard" }
+    ]
+});
+or
+db.getCollection("products").find({
+    "brand": { $in: ["ConnectPro", "SafeGuard"] }
+});
+
+14. Check if any product named "Keyboard" exists
+db.getCollection("products").find({
+    "name": {
+        $eq: "Keyboard",
+        $exists: true
+    }
+});
+
+15. Find all unique categories in the products collection
+db.getCollection("products").distinct("category");
+
+
