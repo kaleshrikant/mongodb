@@ -1,0 +1,91 @@
+1. Delete the product with name "Phone Case"
+db.getCollection("products").deleteMany({"name" : "Phone Case"});
+
+2. Delete all products with stock equal to 0
+db.getCollection("products").deleteMany({"stock" : {$eq: 0}});
+
+3. Delete products from brand "SoundWave"
+db.getCollection("products").deleteMany({"brand" : "SoundWave"});
+
+4. Delete all products in "Accessories" category with price less than $20
+db.getCollection("products").deleteMany({
+    $and: [
+        { "category": "Accessories" },
+        { "price": { $lt: 20 } }
+    ]
+});
+
+IMP : 5. Delete the product with the lowest stock level
+db.getCollection("products").findAndModify({
+    // query
+    query: {},
+    // sort
+    sort: { stock: 1 },
+    // remove
+    remove: true
+});
+
+6. Remove all products that don't have a discount field
+db.getCollection("products").deleteMany({
+    "discount": {
+        $exists: false
+    }
+});
+
+7. Delete products with price greater than $1000
+db.getCollection("products").deleteMany({"price" : {$gt: 1000}});
+
+8. Delete all products where stock is less than 10'
+db.getCollection("products").deleteMany({"stock" : {$lt: 10}});
+
+9. Delete one product from "Electronics" category (any one)
+db.getCollection("products").deleteOne({"category" : "Electronics"});
+
+10. Delete all products that were added before a specific date
+// Specific date and time
+db.getCollection("products").deleteMany({
+    "expiryDate": { $lt: ISODate("1987-08-30T00:00:00Z") }
+});
+
+// Current date minus days
+db.getCollection("products").deleteMany({
+    "expiryDate": { $lt: new Date(new Date().setDate(new Date().getDate() - 365)) }
+});
+
+// Using Date constructor
+db.getCollection("products").deleteMany({
+    "expiryDate": { $lt: new Date("1987-08-30") }
+});
+
+11. Remove products where the brand field doesn't exist
+db.getCollection("products").deleteOne({"brand" : {$exists : false}});
+
+12. Delete all products except those in "Electronics" category
+db.getCollection("products").deleteMany({"category" : {$ne : "Electronics"}});
+
+IMP : 13. Delete products with names starting with "USB"
+db.getCollection("products").deleteMany({
+    "name": { $regex: /^USB/i }
+});
+or
+db.products.deleteMany({
+    "name": {
+        $regex: "^USB",
+        $options: "i"
+    }
+});
+
+IMP : 14. Remove all products and verify collection is empty
+// Delete ALL products from the collection
+db.getCollection("products").deleteMany({});
+
+// Count should be 0
+db.getCollection("products").countDocuments();
+// Should return empty cursor
+db.getCollection("products").find().toArray().length;
+// Should return 0
+db.getCollection("products").find().count();
+
+15. Delete products where rating is less than 3.0
+db.getCollection("products").deleteMany({"rating" : {$lt : 3.0}});
+
