@@ -1,0 +1,103 @@
+1. Find products with price greater than $100
+db.getCollection("products").find(
+    { "price": { $gt: 100 } }
+);
+
+2. Find products with stock less than or equal to 30
+db.getCollection("products").find(
+    { "stock": { $lte: 30 } }
+);
+
+3. Find products with rating not equal to 4.5
+db.getCollection("products").find(
+    { "rating": { $ne: 4.5 } }
+);
+
+4. Find products with price greater than or equal to $89.99
+db.getCollection("products").find(
+    { "price": { $gte: 89.99 } }
+);
+
+5. Find products with stock less than 50
+db.getCollection("products").find(
+    { "stock": { $lt: 50 } }
+);
+
+6. Find products where category is in ["Electronics", "Furniture"]
+db.getCollection("products").find(
+    { "category": { $in: ["Electronics", "Furniture"] } }
+);
+
+7. Find products where brand is not in ["GamePro", "BrightLight"]
+db.getCollection("products").find(
+    { "brand": { $nin: ["GamePro", "BrightLight"] } }
+);
+
+8. Find products with price between $50 and $150 (inclusive)
+db.getCollection("products").find(
+    {
+        $and: [
+            { "price": { $gt: 50 } },
+            { "price": { $lte: 150 } }
+        ]
+    }
+);
+
+9. Find products with rating greater than 4.5
+db.getCollection("products").find(
+    {
+        "rating": {
+            $gt: 4.5
+        }
+    }
+);
+
+10 Find products with stock not equal to 0
+db.getCollection("products").find(
+    {
+        "stock": {
+            $eq: 0
+        }
+    }
+);
+
+11. Find products where price is exactly $299.99
+db.getCollection("products").find(
+    {
+        "price": {
+            $eq: 299.99
+        }
+    }
+);
+
+12. Find products with rating between 4.3 and 4.7
+db.getCollection("products").find(
+    {
+        "rating": {
+            $gt: 4.3,
+            $lte: 4.7
+        }
+    }
+);
+
+13. Find all products NOT in "Accessories" category
+db.getCollection("products").find({
+    "category": {
+        $nin: ["Accessories"]
+    }
+});
+
+14. Find products where stock is in the list [20, 30, 45]
+db.getCollection("products").find({
+    "stock": {
+        $in: [20, 30, 45]
+    }
+});
+
+15. Find products with price less than $40 OR greater than $250
+db.getCollection("products").find({
+    "price": {
+       $lt: 40,
+       $gt: 250
+    }
+});
