@@ -1,0 +1,197 @@
+1. Find products that are Electronics AND have price < $100
+db.getCollection("products").find({
+    $and: [
+        { "category": "Electronics" },
+        { "price": { $gt: 100 } }
+    ]
+});
+
+2. Find products that are either out of stock OR have rating < 4.3
+db.getCollection("products").find({
+    $and: [
+        { "stock": { $eq: 0 } },
+        { "rating": { $lt: 4.3 } }
+    ]
+});
+
+3. Find products NOT in Furniture category
+db.getCollection("products").find({
+    $nor: [
+        { "category": "Furniture" }
+    ]
+});
+
+4. Find products where price > $100 AND stock > 25
+db.getCollection("products").find({
+    $and: [
+        { "price": { $gt: 100 } },
+        { "stock": { $gt: 25 } }
+    ]
+});
+
+5. Find products in Electronics OR Furniture category with rating >= 4.5
+db.getCollection("products").find({
+    $or: [
+        { "category": "Furniture" },
+        { "rating": { $gte: 4.5 } }
+    ]
+});
+
+6. Find products where brand is GamePro OR rating is greater than 4.7
+db.getCollection("products").find({
+    $or: [
+        { "brand": "GamePro" },
+        { "rating": { $gt: 4.7 } }
+    ]
+});
+
+7. Find products that are NOT (Electronics AND price > $200)
+db.getCollection("products").find({
+    $nor: [
+        { "category": "Electronics" },
+        { "price": { $gt: 200 } }
+    ]
+});
+or
+db.getCollection("products").find({
+    $or: [
+        { "category": { $ne: "Electronics" } },
+        { "price": { $lte: 200 } }
+    ]
+});
+
+8. Find products where (category is Electronics OR category is Furniture) AND price < $150
+db.getCollection("products").find({
+    $or: [
+        { "category": "Electronics" },
+        { "category": "Furniture" }
+    ],
+    "price": { $lt: 150 }
+});
+or
+db.getCollection("products").find({
+    $and: [
+        {
+            $or: [
+                { "category": "Electronics" },
+                { "category": "Furniture" }
+            ]
+        },
+        { "price": { $lt: 150 } }
+    ]
+});
+or
+db.getCollection("products").find({
+    "category": { $in: ["Electronics", "Furniture"] },
+    "price": { $lt: 150 }
+});
+
+9. Find products neither in Electronics category NOR with rating below 4.5
+db.getCollection("products").find({
+    $nor: [
+        { "category": "Electronics" },
+        { "rating": { $lt: 4.5 } }
+    ]
+});
+or with Projection:
+db.getCollection("products").find({
+    $nor: [
+        { "category": "Electronics" },
+        { "rating": { $lt: 4.5 } }
+    ]
+}, {
+    "name": 1,
+    "category": 1,
+    "rating": 1,
+    "_id": 0
+});
+
+10. Find products where stock is between 20 and 50 AND category is not Furniture
+db.getCollection("products").find({
+    "stock": {
+        $gt: 20,
+        $lt: 50
+    },
+    "category": { $ne: "Furniture" }
+});
+
+11. Find products where price < $100 OR (stock > 40 AND rating >= 4.5)
+db.getCollection("products").find({
+    $or: [
+        { "price": { $gt: 100 } },
+        {
+            $and: [
+                { "stock": { $gt: 40 } },
+                { "rating": { $gte: 4.5 } }
+            ]
+        }
+    ]
+});
+
+or : Simpler Alternative (Implicit AND):
+// The $and is implicit in the second condition
+db.getCollection("products").find({
+    $or: [
+        { "price": { $lt: 100 } },
+        {
+            "stock": { $gt: 40 },
+            "rating": { $gte: 4.5 }
+        }
+    ]
+});
+
+12. Find products where brand is NOT GamePro AND price is less than $200
+db.getCollection("products").find({
+    "brand": { $ne: "GamePro" },
+    "price": { $lt: 200 }
+});
+
+13. Find Electronics with either stock < 50 OR rating > 4.6
+db.getCollection("products").find({
+    "category": "Electronics",
+    $or: [
+        { "stock": { $lt: 50 } },
+        { "rating": { $gt: 4.6 } }
+    ]
+});
+or  Alternative Using $and Explicitly:
+db.getCollection("products").find({
+    $and: [
+        { "category": "Electronics" },
+        {
+            $or: [
+                { "stock": { $lt: 50 } },
+                { "rating": { $gt: 4.6 } }
+            ]
+        }
+    ]
+});
+
+14. Find products that satisfy: (price > $200 AND rating > 4.6) OR stock < 30
+db.getCollection("products").find({
+    $or: [
+        { "stock": { $lt: 30 } },  // Fixed: $lt instead of $gt
+        {
+            $and: [
+                { "price": { $gt: 200 } },
+                { "rating": { $gt: 4.6 } }
+            ]
+        }
+    ]
+});
+
+15. Find products where NOT (stock = 0 OR rating < 4.0)
+db.getCollection("products").find({
+    $nor: [
+        { "stock": { $eq: 0 } },
+        { "rating": { $lt: 4.0 } }
+    ]
+});
+or
+db.getCollection("products").find({
+    $nor: [
+        { "stock": 0 },
+        { "rating": { $lt: 4.0 } }
+    ]
+});
+
