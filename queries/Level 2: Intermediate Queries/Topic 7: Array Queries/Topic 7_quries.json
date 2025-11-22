@@ -1,0 +1,126 @@
+1. Find products that have the tag "fitness"
+db.getCollection("catalog").find({
+    "tags": "fitness"
+});
+
+2. Find products with ALL tags: ["fitness", "sports"]
+// ❌ INCORRECT - This finds products with EITHER tag
+db.catalog.find({
+    "tags": {
+        $in: [
+            "fitness", "sports"
+        ]
+    }
+});
+// ✅ CORRECT - This finds products with BOTH tags
+db.catalog.find({
+    "tags": {
+        $all: ["fitness", "sports"]
+    }
+});
+
+3. Find products available in "black" color
+// ❌ INCORRECT - $exists checks field existence, not array values
+db.getCollection("catalog").find({
+    "colors": { $exists: "black" }  // This checks if "colors" field exists
+});
+// ✅ CORRECT - Check if "black" is in colors array
+db.getCollection("catalog").find({
+    "colors": "black"
+});
+// ✅ CORRECT - Using $in for array containment
+db.getCollection("catalog").find({
+    "colors": { $in: ["black"] }
+});
+
+4. Find products that have exactly 3 features
+db.getCollection("catalog").find({
+    "features": { $size: 3 }
+});
+
+5. Find products with exactly 2 colors available
+db.getCollection("catalog").find({
+    "colors": { $size: 2 }
+});
+
+5. Find products where tags include either "electronics" OR "sports"
+db.getCollection("catalog").find({
+    $or: [
+        { "tags": "electronics" },
+        { "tags": "sports" }
+    ]
+});
+// or
+db.getCollection("catalog").find({
+    "tags": { $in: ["electronics", "sports"] }
+});
+
+6. Find products that have "waterproof" in their features array
+db.getCollection("catalog").find({
+    "features": "waterproof"
+});
+
+7. Find products with more than 2 colors available (hint: use $expr and $size)
+db.getCollection("catalog").find({
+    $expr: {
+        $gt: [
+            { $size: "$colors" },   // size of the array
+            2                       // compare to 2
+        ]
+    }
+});
+
+8. Find products that have both "fitness" and "outdoor" tags
+db.getCollection("catalog").find({
+    tags: {
+        $all: ["fitness", "outdoor"]
+    }
+});
+
+9. Find products where colors array contains "blue"
+db.getCollection("catalog").find({
+    "colors": "blue"
+});
+10. Find products that have ALL colors: ["black", "silver"]
+db.getCollection("catalog").find({
+    "colors": {
+        $all: ["black", "silver"]
+    }
+});
+11. Find products with tags array size not equal to 3
+// ❌ INCORRECT - May not work as expected in all versions
+db.getCollection("catalog").find({
+    "tags": {
+        $not: { $size: 3 }
+    }
+});
+// ✅ CORRECT - Use aggregation approach
+db.catalog.aggregate([
+    { $match: { $expr: { $ne: [{ $size: "$tags" }, 3] } } }
+]);
+
+12. Find products that have either "gps" or "laptop-compartment" in features
+db.getCollection("catalog").find({
+    $or: [
+        { "features": "gps" },
+        { "features": "laptop-compartment" }
+    ]
+});
+13. Find products where tags contain "electronics" and price > $150
+// ✅ WORKS but overcomplicated
+db.getCollection("catalog").find({
+    $and: [
+        { "tags": "electronics" },
+        { "price": { $gt: 150 } }
+    ]
+});
+// ✅ BETTER - Implicit AND
+{ "tags": "electronics", "price": { $gt: 150 } }
+
+14. Find products that have both "waterproof" feature and price < $100
+db.getCollection("catalog").find({
+    $and: [
+        { "features": "waterproof" },
+        { "price": { $lt: 100 } }
+    ]
+});
