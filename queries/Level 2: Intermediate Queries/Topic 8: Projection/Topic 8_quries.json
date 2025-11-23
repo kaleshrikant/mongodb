@@ -130,4 +130,3 @@ db.getCollection("catalog").find(
     // projection
     { "colors": 0, "features": 0 }
 );
-
