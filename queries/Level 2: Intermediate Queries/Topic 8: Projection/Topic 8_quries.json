@@ -1,0 +1,133 @@
+1. Get only name and price of all products
+db.getCollection("catalog").find(
+    // query
+    {},
+    // projection
+    { "name": 1, "price": 1 }
+);
+
+2. Get all products but exclude the _id field
+db.getCollection("catalog").find(
+    // query
+    {},
+    // projection
+    { "_id": 0 }
+);
+
+3. Get name, price, and first color from colors array
+db.getCollection("catalog").find(
+    // query
+    {},
+    // projection
+    { "name": 1, "price": 1, "colors": { $slice: 1 } }
+);
+
+4. Get all fields except features array
+db.getCollection("catalog").find(
+    // query
+    {},
+    // projection
+    { "features": 0 }
+);
+5. Get only the name field (excluding _id)
+db.getCollection("catalog").find(
+    // query
+    {},
+    // projection
+    { "name": 1, "_id": 0 }
+);
+6. Project name and the first 2 tags from tags array
+db.getCollection("catalog").find(
+    // query
+    {},
+    // projection
+    { "name": 1, "tags": { $slice: 2 } }
+);
+7. Get name, price, and count of colors (using $size in projection)
+db.getCollection("catalog").aggregate([
+    {
+        $project: {
+            "name": 1,
+            "price": 1,
+            "colorCount": { $size: "$colors" },
+            "_id": 0
+        }
+    }
+]);
+
+8 Get all products showing only name and whether they have "waterproof" feature
+db.getCollection("catalog").find(
+    // query
+    { "features": "waterproof" },
+    // projection
+    { "name": 1, }
+);
+
+9. Project name and slice the features array to show only first feature
+db.getCollection("catalog").find(
+    // query
+    {},
+    // projection
+    { "name": 1, "features": { $slice: 1 } }
+);
+
+10. Get products with name, price, and a computed field showing if price > $100
+db.getCollection("catalog").find(
+    // query
+    {},
+    // projection
+    { "name": 1, "price": 1, "price > $100": { $gt: ["$price", 100] } }
+);
+or
+db.getCollection("catalog").aggregate([
+  {
+    $project: {
+      name: 1,
+      price: 1,
+      isExpensive: { $gt: ["$price", 100] }
+    }
+  }
+]);
+
+11. Exclude both _id and features from results
+db.getCollection("catalog").find(
+    // query
+    {},
+    // projection
+    { "_id": 0, "features": 0 }
+);
+
+12. Get only nested fields if you have embedded documents
+db.getCollection("catalog").find(
+    {},
+    {
+        "name": 1,
+        "tags": { $slice: 1 },
+        "_id": 0
+    }
+);
+
+13. Project name and last element from colors array
+db.getCollection("catalog").find(
+    // query
+    {},
+    // projection
+    { "name": 1, "colors": { $slice: -1 } }
+);
+
+14. Show name and number of tags for each product
+db.getCollection("catalog").find(
+    // query
+    {},
+    // projection
+    { "name": 1, "tagCount": { $size: "$tags" } }
+);
+
+15. Get all fields but exclude colors and features arrays
+db.getCollection("catalog").find(
+    // query
+    {},
+    // projection
+    { "colors": 0, "features": 0 }
+);
+
