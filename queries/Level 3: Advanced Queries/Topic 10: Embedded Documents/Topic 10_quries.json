@@ -1,0 +1,100 @@
+1. Find products with processor "Intel i7"
+db.getCollection("marketplace").find({
+    "specs.processor": "Intel i7"
+});
+
+2. Find products where seller rating is greater than 4.5
+db.getCollection("marketplace").find({
+    "seller.rating": { $gt: 4.5 }
+});
+
+3. Find products sold by seller in "California"
+db.getCollection("marketplace").find({
+    "seller.location": "California"
+});
+
+4. Find products with 16GB RAM
+db.getCollection("marketplace").find({
+    "specs.ram": "16GB"
+});
+
+5. Find products where seller name is "TechStore Inc"
+db.getCollection("marketplace").find({
+    "seller.name": "TechStore Inc"
+});
+
+6. Find in-stock products with seller rating >= 4.6
+db.getCollection("marketplace").find(
+    { "seller.rating": { $gte: 4.6 } },
+    { "name": 1, "_id": 0 }
+);
+
+7. Find products with storage containing "SSD"
+db.getCollection("marketplace").find({
+    "specs.storage": {
+        $regex: "SSD",
+        $options: "i"
+    }
+});
+
+8. Find products where seller location is NOT "Texas"
+db.getCollection("marketplace").find({
+    "seller.location": {
+        $nin: ["Texas"]
+    }
+});
+
+9. Find products with screen size "15.6 inch"
+db.getCollection("marketplace").find({
+    "specs.screen": {
+        $eq: "15.6 inch"
+    }
+});
+
+10. Find products where specs.ram is "8GB" AND price < $700
+db.getCollection("marketplace").find({
+    $and: [
+        { "specs.ram": "8GB" },
+        { "price": { $lt: 700 } }
+    ]
+});
+
+11. Find products with seller rating between 4.3 and 4.7
+db.getCollection("marketplace").find({
+    "seller.rating": { $gt: 4.3, $lt: 4.7 }
+});
+
+
+12. Find all products from sellers rated above 4.4 in stock
+db.getCollection("marketplace").find({
+    "inStock": true,
+    "seller.rating": { $gt: 4.4 }
+});
+
+13. Update processor to "Intel i9" for products with Intel i7
+db.getCollection("marketplace").update(
+    // Query
+    { "specs.processor": "Intel i7" },
+    // Update
+    { $set: { "specs.processor": "Intel i9" } },
+    // Update Options (Optional)
+    {}
+);
+
+14. Add a warranty field to seller object for TechStore Inc
+db.getCollection("marketplace").update(
+    // Query
+    { "seller.name": "TechStore Inc" },
+    // Update
+    { $set: { "seller.warranty": true } },
+    // Update Options (Optional)
+    {}
+);
+15. Find products where nested seller.rating exists and is greater than 4.0
+// Use find() instead of updateMany()
+db.getCollection("marketplace").find({
+    "seller.rating": {
+        $exists: true,
+        $gt: 4.0
+    }
+});
