@@ -1,0 +1,264 @@
+1. Use $set to update price of "Smart Watch" to $179.99
+db.getCollection("catalog").updateMany(
+    // Query
+    { "name": "Smart Watch" },
+    // Update
+    { $set: { "price": 179.99 } },
+    // Update Options (Optional)
+    {}
+);
+
+2. Use $inc to increase stock of a product by 50
+db.getCollection("marketplace").updateMany(
+    // Query
+    { "inStock": true },
+    // Update
+    { $inc: { "price": 50 } },
+    // Update Options (Optional)
+    {}
+);
+
+3. Use $unset to remove the rating field from a product
+db.products.updateMany(
+  // Query
+  {},
+  // Update
+  {$unset: {"rating": ""}},
+  // Update Option (Optional)
+  {}
+);
+
+4. Use $push to add "wireless" to tags array of Smart Watch
+db.catalog.updateMany(
+    // Query
+    { name: "Smart Watch" },
+    // Update
+    { $push: { "tags": "wireless" } },
+    // Update Options (Optional)
+    {}
+);
+
+5. Use $pull to remove "gold" from colors array
+db.catalog.updateMany(
+    // Query
+    {},
+    // Update
+    { $pull: { "colors": "gold" } },
+    // Update Options (Optional)
+    {}
+);
+
+6. Use $addToSet to add "premium" tag only if it doesn't exist
+db.catalog.updateMany(
+    // Query
+    {},
+    // Update
+    { $addToSet: { "tags": "premium" } },
+    // Update Options (Optional)
+    {}
+);
+
+7. Use $rename to change field "features" to "specifications"
+db.catalog.updateMany(
+    // Query
+    {},
+    // Update
+    { $rename: { "features": "specifications" } },
+    // Update Options (Optional)
+    {}
+);
+
+8. Increment price of all electronics by 10 using $inc with multiplier
+db.catalog.updateMany(
+    // Query
+    { category: "Electronics" },
+    // Update
+    { $inc: { "price": 10 } },
+    // Update Options (Optional)
+    {}
+);
+
+9. Use $push with $each to add multiple colors at once
+db.catalog.updateMany(
+    // Query
+    {},
+    // Update
+    {
+        $push: {
+            "colors": {
+                $each: ["white", "gray"]
+            }
+        }
+    },
+    // Update Options (Optional)
+    {}
+);
+
+10. Use $pull to remove all tags that equal "fitness"
+db.catalog.updateMany(
+    // Query
+    {},
+    // Update
+    {
+        $pull: {
+            "tags": "fitness"
+        }
+    },
+    // Update Options (Optional)
+    {}
+);
+or
+db.catalog.updateMany(
+    // Query
+    {},
+    // Update
+    {
+        $pullAll: {
+            "tags": ["fitness"]
+        }
+    },
+    // Update Options (Optional)
+    {}
+);
+
+11. Set multiple fields at once using $set: update price and stock
+db.catalog.updateMany(
+    // Query
+    {},
+    // Update
+    {
+        $set: {
+            "price": 1299.99,
+            "stock": 45
+        }
+    },
+    // Update Options (Optional)
+    {}
+);
+
+12. Use $inc to decrement stock by 5 for a specific product
+db.catalog.updateMany(
+    // Query
+    { name: "Laptop" },
+    // Update
+    {
+        $inc: {
+            "stock": -5
+        }
+    },
+    // Update Options (Optional)
+    {}
+);
+
+13. Remove inStock field from all products using $unset
+db.catalog.updateMany(
+    // Query
+    { name: "Laptop" },
+    // Update
+    {
+        $unset: {
+            "inStock": ""
+        }
+    },
+    // Update Options (Optional)
+    {}
+);
+
+14. Push a new feature to features array with $position modifier
+db.catalog.updateMany(
+    // Query
+    {},
+    // Update
+    {
+        $push: {
+            "features": {
+                $each: ["rugged"],
+                $position: 3  // Insert at 4th position (0-based index)
+            }
+        }
+    },
+    // Update Options (Optional)
+    {}
+);
+
+15. Use $pop to remove first element from tags array
+db.catalog.updateMany(
+    // Query
+    {},
+    // Update
+    {
+		$pop: {
+				    "features": -1  // -1 = remove from beginning (first element) // Remove first feature from array
+				}
+			},
+    // Update Options (Optional)
+    {}
+);
+
+16. Use $pullAll to remove multiple specific colors at once
+db.catalog.updateMany(
+    // Query
+    {},
+    // Update
+    {
+        $pull: {
+            "colors": {
+                $regex: "gr",
+                $options: "i"
+            }
+        }
+    }
+);
+
+17. Add seller.verified field set to true using $set with dot notation
+db.catalog.updateMany(
+    // Query
+    {},
+    // Update
+    {
+        $set: {
+			"seller.verified" : "true"
+        }
+    },
+    // Update Options (Optional)
+    {}
+);
+
+18. Use $min to update price only if new value is lower
+db.catalog.updateMany(
+    // Query
+    {},
+    // Update
+    {
+		$min: { "price": 20 }  // Only updates if current price > 20
+
+    },
+    // Update Options (Optional)
+    {}
+);
+
+19. Use $max to update rating only if new value is higher
+db.products.updateMany(
+    // Query
+    {},
+    // Update
+    {
+		$max: { "rating": 4.0 }
+
+    },
+    // Update Options (Optional)
+    {}
+);
+
+20. Use $mul to multiply all prices by 0.9 (10% discount)
+db.products.updateMany(
+    // Query
+    {},
+    // Update
+    {
+		$mul: { "price": 0.9 }
+
+    },
+    // Update Options (Optional)
+    {}
+);
